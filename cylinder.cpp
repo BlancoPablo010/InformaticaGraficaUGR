@@ -6,9 +6,8 @@ _cylinder::_cylinder(float Radius, float Heigth, int NumDivisions)
     Triangles.resize(4*NumDivisions);
 
     vector<vector<float>> points {
-                                 {Heigth/2, Radius, Radius},
-                                 {-Heigth/2, Radius, Radius}
+                                 {Radius, Heigth/2, Radius},
+                                 {Radius, -Heigth/2, Radius}
     };
-    _initialize(axis::X, points, Radius, Heigth, NumDivisions, 2, 3);
-    ScaleVertices = Vertices;
+    _initialize(axis::Y, points, Radius, Heigth, NumDivisions, 2, 3);
 }

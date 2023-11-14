@@ -28,5 +28,4 @@ _ply::_ply(string File)
         triangleCounter++;
     }
 
-    ScaleVertices = Vertices;
 }

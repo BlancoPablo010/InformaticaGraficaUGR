@@ -7,7 +7,7 @@
 class _sphere:public _revolutionObject3D
 {
 public:
-    _sphere(float Radius=0.5f, int NumDivisions=4);
+    _sphere(float Radius=0.5f, int NumDivisions=30);
 };
 
 #endif // _SPHERE_H

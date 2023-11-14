@@ -25,6 +25,13 @@ _gl_widget::_gl_widget(_window *Window1):Window(Window1)
 {
   setMinimumSize(300, 300);
   setFocusPolicy(Qt::StrongFocus);
+
+  connect(&baseTimer, SIGNAL(timeout()), this, SLOT(updateBase()));
+  baseTimer.start(16);
+
+  connect(&brazosTimer, SIGNAL(timeout()), this, SLOT(updateBrazos()));
+  brazosTimer.start(16);
+
 }
 
 
@@ -44,11 +51,13 @@ void _gl_widget::keyPressEvent(QKeyEvent *Keyevent)
   case Qt::Key_4:Object=OBJECT_CYLINDER;break;
   case Qt::Key_5:Object=OBJECT_SPHERE;break;
   case Qt::Key_6:Object=OBJECT_PLY;break;
+  case Qt::Key_7:Object=OBJECT_MODEL;break;
 
   case Qt::Key_P:Draw_point=!Draw_point;break;
   case Qt::Key_L:Draw_line=!Draw_line;break;
   case Qt::Key_F:Draw_fill=!Draw_fill;break;
   case Qt::Key_C:Draw_chess=!Draw_chess;break;
+
 
   case Qt::Key_Left:Observer_angle_y-=ANGLE_STEP;break;
   case Qt::Key_Right:Observer_angle_y+=ANGLE_STEP;break;
@@ -111,6 +120,44 @@ void _gl_widget::change_observer()
   glRotatef(Observer_angle_x,1,0,0);
   glRotatef(Observer_angle_y,0,1,0);
 }
+/*****************************************************************************//**
+ * Funciones para actualizar la animación con QTimer
+ *
+ *
+ *
+ *****************************************************************************/
+
+void _gl_widget::updateBase() {
+  aplhaBase += 1;
+  if (aplhaBase >= 360) {
+      aplhaBase = 0;
+  }
+
+  Saltamontes->setAlphaBase(aplhaBase);
+  update();
+}
+
+void _gl_widget::updateBrazos() {
+
+  if (rotateDownBrazos) {
+      alphaBrazos += 1;
+
+      if(alphaBrazos >= 60) {
+          alphaBrazos = 60;
+          rotateDownBrazos = false;
+      }
+  } else {
+      alphaBrazos -= 1;
+
+      if(alphaBrazos <= 1) {
+          alphaBrazos = 1;
+          rotateDownBrazos = true;
+      }
+  }
+
+  Saltamontes->setAlphaBrazos(alphaBrazos);
+  update();
+}
 
 
 /*****************************************************************************//**
@@ -134,6 +181,7 @@ void _gl_widget::draw_objects()
     case OBJECT_CYLINDER:Cylinder->draw_point();break;
     case OBJECT_SPHERE:Sphere->draw_point();break;
     case OBJECT_PLY:Ply->draw_point();break;
+    case OBJECT_MODEL:Saltamontes->draw(_mode::MODE_DRAW_POINT);break;
     default:break;
     }
   }
@@ -148,6 +196,7 @@ void _gl_widget::draw_objects()
     case OBJECT_CYLINDER:Cylinder->draw_line();break;
     case OBJECT_SPHERE:Sphere->draw_line();break;
     case OBJECT_PLY:Ply->draw_line();break;
+    case OBJECT_MODEL:Saltamontes->draw(_mode::MODE_DRAW_LINE);break;
     default:break;
     }
   }
@@ -161,6 +210,7 @@ void _gl_widget::draw_objects()
     case OBJECT_CYLINDER:Cylinder->draw_fill();break;
     case OBJECT_SPHERE:Sphere->draw_fill();break;
     case OBJECT_PLY:Ply->draw_fill();break;
+    case OBJECT_MODEL:Saltamontes->draw(_mode::MODE_DRAW_FILL);break;
     default:break;
     }
   }
@@ -173,6 +223,7 @@ void _gl_widget::draw_objects()
     case OBJECT_CYLINDER:Cylinder->draw_chess();break;
     case OBJECT_SPHERE:Sphere->draw_chess();break;
     case OBJECT_PLY:Ply->draw_chess();break;
+    case OBJECT_MODEL:Saltamontes->draw(_mode::MODE_DRAW_CHESS);break;
     default:break;
     }
   }
@@ -247,14 +298,16 @@ void _gl_widget::initializeGL()
   Observer_distance=DEFAULT_DISTANCE;
 
   Draw_point=false;
-  Draw_line=true;
+  Draw_line=false;
   Draw_fill=false;
-  Draw_chess=false;
+  Draw_chess=true;
+  Draw_model=false;
 
   Cylinder = new _cylinder(0.5f,2,60);
   Cone = new _cone(0.5f,2,60);
   Sphere = new _sphere(1.f,60);
   string path = "../P1_skeleton/ply_models/beethoven.ply";
   Ply = new _ply(path);
+  Saltamontes = new _saltamontes();
 
 }

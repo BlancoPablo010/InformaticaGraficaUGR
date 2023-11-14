@@ -15,6 +15,7 @@
 #include <QOpenGLWidget>
 #include <QKeyEvent>
 #include <iostream>
+#include <QTimer>
 #include "vertex.h"
 #include "colors.h"
 #include "axis.h"
@@ -24,6 +25,8 @@
 #include "cone.h"
 #include "sphere.h"
 #include "ply.h"
+#include "saltamontes.h"
+
 
 
 namespace _gl_widget_ne {
@@ -38,7 +41,7 @@ namespace _gl_widget_ne {
   const float ANGLE_STEP=1;
 
   typedef enum {MODE_DRAW_POINT,MODE_DRAW_LINE,MODE_DRAW_FILL,MODE_DRAW_CHESS} _mode_draw;
-  typedef enum {OBJECT_TETRAHEDRON,OBJECT_CUBE,OBJECT_CONE,OBJECT_CYLINDER,OBJECT_SPHERE,OBJECT_PLY} _object;
+  typedef enum {OBJECT_TETRAHEDRON,OBJECT_CUBE,OBJECT_CONE,OBJECT_CYLINDER,OBJECT_SPHERE,OBJECT_PLY,OBJECT_MODEL} _object;
 }
 
 class _window;
@@ -56,6 +59,8 @@ Q_OBJECT
 public:
   _gl_widget(_window *Window1);
 
+
+
   void clear_window();
   void change_projection();
   void change_observer();
@@ -63,6 +68,9 @@ public:
   void draw_axis();
   void draw_objects();
 
+public slots:
+  void updateBase();
+  void updateBrazos();
 
 protected:
   void resizeGL(int Width1, int Height1) Q_DECL_OVERRIDE;
@@ -73,6 +81,11 @@ protected:
 
 private:
   _window *Window;
+  QTimer baseTimer;
+  QTimer brazosTimer;
+  int aplhaBase = 0;
+  int alphaBrazos = 0;
+  bool rotateDownBrazos = true;
 
   _axis Axis;
   _tetrahedron Tetrahedron;
@@ -82,7 +95,7 @@ private:
   _cone *Cone=nullptr;
   _sphere *Sphere=nullptr;
   _ply *Ply=nullptr;
-
+  _saltamontes *Saltamontes=nullptr;
 
   _gl_widget_ne::_object Object;
 
@@ -90,6 +103,7 @@ private:
   bool Draw_line;
   bool Draw_fill;
   bool Draw_chess;
+  bool Draw_model;
 
   float Observer_angle_x;
   float Observer_angle_y;

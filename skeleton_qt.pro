@@ -11,6 +11,7 @@ HEADERS += \
     ply.h \
     ply_object3d.h \
     revolutionobject3d.h \
+    saltamontes.h \
     sphere.h \
   tetrahedron.h \
 #  cube.h \
@@ -27,6 +28,7 @@ SOURCES += \
     ply.cpp \
     ply_object3d.cpp \
     revolutionobject3d.cpp \
+    saltamontes.cpp \
     sphere.cpp \
   tetrahedron.cc \
 #  cube.cc \
