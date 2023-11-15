@@ -128,7 +128,7 @@ void _gl_widget::change_observer()
  *****************************************************************************/
 
 void _gl_widget::updateBase() {
-  aplhaBase += 1;
+  aplhaBase += 2;
   if (aplhaBase >= 360) {
       aplhaBase = 0;
   }
@@ -139,23 +139,35 @@ void _gl_widget::updateBase() {
 
 void _gl_widget::updateBrazos() {
 
-  if (rotateDownBrazos) {
-      alphaBrazos += 1;
+  alturaBrazos += 0.0015f;  // Ajusta según sea necesario
 
-      if(alphaBrazos >= 60) {
-          alphaBrazos = 60;
+  // Cambia la dirección cuando alcanza cierta altura
+  if (alturaBrazos >= 0.5f || alturaBrazos <= 0.0f) {
+      alturaBrazos = (alturaBrazos >= 0.5f) ? 0.5f : 0.0f;
+  }
+
+  if (rotateDownBrazos) {
+      alphaBrazosPares++;
+      alphaBrazosImpares--;
+
+      if(alphaBrazosPares >= 90) {
+          alphaBrazosPares = 90;
+          alphaBrazosImpares = 0;
+
           rotateDownBrazos = false;
       }
   } else {
-      alphaBrazos -= 1;
+      alphaBrazosPares--;
+      alphaBrazosImpares++;
 
-      if(alphaBrazos <= 1) {
-          alphaBrazos = 1;
+      if(alphaBrazosPares <= 0) {
+          alphaBrazosPares = 0;
+          alphaBrazosImpares = 90;
           rotateDownBrazos = true;
       }
   }
 
-  Saltamontes->setAlphaBrazos(alphaBrazos);
+  Saltamontes->setAlphaBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
   update();
 }
 

@@ -84,7 +84,9 @@ private:
   QTimer baseTimer;
   QTimer brazosTimer;
   int aplhaBase = 0;
-  int alphaBrazos = 0;
+  int alphaBrazosPares = 0;
+  int alphaBrazosImpares = 80;
+  float alturaBrazos = 0.0f;
   bool rotateDownBrazos = true;
 
   _axis Axis;

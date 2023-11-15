@@ -21,7 +21,9 @@ class _saltamontes
     _sphere *Sphere = new _sphere;
     _cube *Cube = new _cube;
     int alphaBase;
-    int alphaBrazos;
+    int alphaBrazosPares;
+    int alphaBrazosImpares;
+    int alturaBrazos;
 
 public:
     _saltamontes() {}
@@ -30,10 +32,12 @@ public:
     void base(const _draw&);
     void antebrazo(const _draw&);
     void brazo(const _draw&);
+    void cabina(const _draw&);
     void asiento(const _draw&);
     void brazos(const _draw&);
     void setAlphaBase(const int&);
-    void setAlphaBrazos(const int&);
+    void setAlphaBrazos(const int&, const int&, const float&);
+
 };
 
 #endif // SALTAMONTES_H
