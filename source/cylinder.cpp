@@ -1,4 +1,4 @@
-#include "cylinder.h"
+#include "../include/cylinder.h"
 
 _cylinder::_cylinder(float Radius, float Heigth, int NumDivisions)
 {

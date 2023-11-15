@@ -1,4 +1,4 @@
-#include "cone.h"
+#include "../include/cone.h"
 
 
 _cone::_cone(float Radius, float Heigth, int NumDivisions)

@@ -1,13 +1,17 @@
-#include "saltamontes.h"
+#include "../include/saltamontes.h"
 
 void _saltamontes::setAlphaBase(const int& rotationAngle) {
-    alphaBase = rotationAngle;
+    this->alphaBase = rotationAngle;
 }
 
 void _saltamontes::setAlphaBrazos(const int& pares, const int& impares, const float& alturaBrazos) {
     this->alphaBrazosPares = pares;
     this->alphaBrazosImpares = impares;
     this->alturaBrazos = alturaBrazos;
+}
+
+void _saltamontes::setAlphaCabina(const int& rotationAngle) {
+    this->alphaCabina = rotationAngle;
 }
 
 void _saltamontes::draw(const _draw& draw)
@@ -105,6 +109,7 @@ void _saltamontes::brazos(const _draw& draw) {
     glRotatef(alphaBrazosPares,1,0,0);
     glRotatef(45,1,0,0);
     glTranslatef(0,-alturaBrazos,0);
+    glRotatef(180,0,1,0);
     brazo(draw);
     glPopMatrix();
 
@@ -114,6 +119,7 @@ void _saltamontes::brazos(const _draw& draw) {
     glRotatef((alphaBrazosImpares),0.5,0,0.5);
     glRotatef(45,0.5,0,0.5);
     glTranslatef(0,-alturaBrazos,0);
+    glRotatef(135,0,1,0);
     brazo(draw);
     glPopMatrix();
 
@@ -123,6 +129,7 @@ void _saltamontes::brazos(const _draw& draw) {
     glRotatef(alphaBrazosPares,0,0,1);
     glRotatef(45,0,0,1);
     glTranslatef(0,-alturaBrazos,0);
+    glRotatef(90,0,1,0);
     brazo(draw);
     glPopMatrix();
 
@@ -132,6 +139,7 @@ void _saltamontes::brazos(const _draw& draw) {
     glRotatef(alphaBrazosImpares,-0.5,0,0.5);
     glRotatef(45,-0.5,0,0.5);
     glTranslatef(0,-alturaBrazos,0);
+    glRotatef(45,0,1,0);
     brazo(draw);
     glPopMatrix();
 
@@ -150,6 +158,7 @@ void _saltamontes::brazos(const _draw& draw) {
     glRotatef(alphaBrazosImpares,-0.5,0,-0.5);
     glRotatef(45,-0.5,0,-0.5);
     glTranslatef(0,-alturaBrazos,0);
+    glRotatef(315,0,1,0);
     brazo(draw);
     glPopMatrix();
 
@@ -159,6 +168,7 @@ void _saltamontes::brazos(const _draw& draw) {
     glRotatef(alphaBrazosPares,0,0,-1);
     glRotatef(45,0,0,-1);
     glTranslatef(0,-alturaBrazos,0);
+    glRotatef(270,0,1,0);
     brazo(draw);
     glPopMatrix();
 
@@ -168,6 +178,7 @@ void _saltamontes::brazos(const _draw& draw) {
     glRotatef(alphaBrazosImpares,0.5,0,-0.5);
     glRotatef(45,0.5,0,-0.5);
     glTranslatef(0,-alturaBrazos,0);
+    glRotatef(225,0,1,0);
     brazo(draw);
     glPopMatrix();
 
@@ -198,6 +209,8 @@ void _saltamontes::brazo(const _draw& draw) {
 
     glPushMatrix();
     glTranslatef(0,1.2,0);
+    glRotatef(alphaCabina,0,1,0);
+    glRotatef(-40,0,1,0);
     cabina(draw);
     glPopMatrix();
 }

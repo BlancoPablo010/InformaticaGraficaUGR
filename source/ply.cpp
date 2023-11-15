@@ -1,4 +1,4 @@
-#include "ply.h"
+#include "../include/ply.h"
 
 _ply::_ply(string File)
 {

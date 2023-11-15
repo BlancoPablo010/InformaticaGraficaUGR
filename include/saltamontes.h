@@ -24,6 +24,7 @@ class _saltamontes
     int alphaBrazosPares;
     int alphaBrazosImpares;
     int alturaBrazos;
+    int alphaCabina;
 
 public:
     _saltamontes() {}
@@ -37,6 +38,7 @@ public:
     void brazos(const _draw&);
     void setAlphaBase(const int&);
     void setAlphaBrazos(const int&, const int&, const float&);
+    void setAlphaCabina(const int&);
 
 };
 

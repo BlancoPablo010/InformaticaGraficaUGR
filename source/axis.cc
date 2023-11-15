@@ -7,7 +7,7 @@
  */
 
 
-#include "axis.h"
+#include "../include/axis.h"
 
 using namespace _colors_ne;
 

@@ -71,6 +71,7 @@ public:
 public slots:
   void updateBase();
   void updateBrazos();
+  void updateCabina();
 
 protected:
   void resizeGL(int Width1, int Height1) Q_DECL_OVERRIDE;
@@ -88,6 +89,8 @@ private:
   int alphaBrazosImpares = 80;
   float alturaBrazos = 0.0f;
   bool rotateDownBrazos = true;
+  int alphaCabina = 0;
+  bool rotateCabina = true;
 
   _axis Axis;
   _tetrahedron Tetrahedron;

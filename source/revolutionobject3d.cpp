@@ -1,4 +1,4 @@
-#include "revolutionobject3d.h"
+#include "../include/revolutionobject3d.h"
 using namespace axis;
 
 void _revolutionObject3D::_initialize(_coordenate axis, vector<vector<float>> sidePoints, float radius, float heigth, int numDivisions,

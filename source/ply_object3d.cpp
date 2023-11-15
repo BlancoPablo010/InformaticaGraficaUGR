@@ -1,4 +1,4 @@
-#include "ply_object3d.h"
+#include "../include/ply_object3d.h"
 
 using namespace std;
 

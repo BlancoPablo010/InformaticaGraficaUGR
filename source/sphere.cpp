@@ -1,4 +1,4 @@
-#include "sphere.h"
+#include "../include/sphere.h"
 
 _sphere::_sphere(float Radius, int NumDivisions)
 {

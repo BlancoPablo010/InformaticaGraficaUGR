@@ -12,8 +12,8 @@
 #include <QMenuBar>
 #include <QFrame>
 
-#include "window.h"
-#include "glwidget.h"
+#include "../include/window.h"
+#include "../include/glwidget.h"
 
 
 /*****************************************************************************//**

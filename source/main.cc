@@ -10,7 +10,7 @@
 #include <QApplication>
 #include <QMainWindow>
 #include <QSurfaceFormat>
-#include "window.h"
+#include "../include/window.h"
 
 /*****************************************************************************//**
  *

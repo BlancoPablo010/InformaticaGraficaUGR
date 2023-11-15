@@ -7,8 +7,8 @@
  */
 
 
-#include "glwidget.h"
-#include "window.h"
+#include "../include/glwidget.h"
+#include "../include/window.h"
 
 using namespace std;
 using namespace _gl_widget_ne;
@@ -30,6 +30,9 @@ _gl_widget::_gl_widget(_window *Window1):Window(Window1)
   baseTimer.start(16);
 
   connect(&brazosTimer, SIGNAL(timeout()), this, SLOT(updateBrazos()));
+  brazosTimer.start(16);
+
+  connect(&brazosTimer, SIGNAL(timeout()), this, SLOT(updateCabina()));
   brazosTimer.start(16);
 
 }
@@ -171,6 +174,27 @@ void _gl_widget::updateBrazos() {
   update();
 }
 
+void _gl_widget::updateCabina() {
+  if (rotateCabina) {
+      alphaCabina++;
+
+      if(alphaCabina >= 80) {
+          alphaCabina = 80;
+          rotateCabina = false;
+      }
+  } else {
+      alphaCabina--;
+
+      if(alphaCabina <= 0) {
+          alphaCabina = 0;
+          rotateCabina = true;
+      }
+  }
+
+  Saltamontes->setAlphaCabina(alphaCabina);
+  update();
+
+}
 
 /*****************************************************************************//**
  * Funcion que dibuja los objetos

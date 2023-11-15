@@ -7,7 +7,7 @@
  */
 
 
-#include "object3d.h"
+#include "../include/object3d.h"
 
 using namespace _colors_ne;
 using namespace axis;
