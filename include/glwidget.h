@@ -25,7 +25,7 @@
 #include "cone.h"
 #include "sphere.h"
 #include "ply.h"
-#include "saltamontes.h"
+#include "rana.h"
 
 
 
@@ -59,7 +59,8 @@ Q_OBJECT
 public:
   _gl_widget(_window *Window1);
 
-
+    void activateAnimation();
+  void desactivateAnimation();
 
   void clear_window();
   void change_projection();
@@ -84,13 +85,21 @@ private:
   _window *Window;
   QTimer baseTimer;
   QTimer brazosTimer;
+  QTimer cabinaTimer;
+
+  //Ángulo y parámetros necesarios para rotación de las animaciones
   int aplhaBase = 0;
   int alphaBrazosPares = 0;
   int alphaBrazosImpares = 80;
+  int alphaCabina = 0;
   float alturaBrazos = 0.0f;
   bool rotateDownBrazos = true;
-  int alphaCabina = 0;
   bool rotateCabina = true;
+
+  //Factores de velocidad de las animaciones
+  float velocidadBase = 1;
+  float velocidadBrazos = 1;
+  float velocidadCabina = 1;
 
   _axis Axis;
   _tetrahedron Tetrahedron;
@@ -109,6 +118,8 @@ private:
   bool Draw_fill;
   bool Draw_chess;
   bool Draw_model;
+
+  bool Animation_activated;
 
   float Observer_angle_x;
   float Observer_angle_y;

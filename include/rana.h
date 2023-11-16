@@ -1,11 +1,12 @@
-#ifndef SALTAMONTES_H
-#define SALTAMONTES_H
+#ifndef RANA_H
+#define RANA_H
 
 #include "object3d.h"
 #include "cone.h"
 #include "cylinder.h"
 #include "sphere.h"
 #include "cube.h"
+#include "ply.h"
 
 
 namespace _mode {
@@ -18,7 +19,7 @@ class _saltamontes
 {
     _cone *Cone = new _cone;
     _cylinder *Cylinder = new _cylinder;
-    _sphere *Sphere = new _sphere;
+    _ply *Rana = new _ply("../P1_skeleton/ply_models/rana.ply");
     _cube *Cube = new _cube;
     int alphaBase;
     int alphaBrazosPares;
@@ -42,4 +43,4 @@ public:
 
 };
 
-#endif // SALTAMONTES_H
+#endif // RANA_H

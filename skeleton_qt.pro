@@ -10,8 +10,8 @@ HEADERS += \
     include/axis.h \
     include/ply.h \
     include/ply_object3d.h \
+    include/rana.h \
     include/revolutionobject3d.h \
-    include/saltamontes.h \
     include/sphere.h \
     include/tetrahedron.h \
     include/glwidget.h \
@@ -26,8 +26,8 @@ SOURCES += \
     source/axis.cc \
     source/ply.cpp \
     source/ply_object3d.cpp \
+    source/rana.cpp \
     source/revolutionobject3d.cpp \
-    source/saltamontes.cpp \
     source/sphere.cpp \
     source/tetrahedron.cc \
     source/main.cc \

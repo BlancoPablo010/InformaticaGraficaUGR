@@ -33,7 +33,7 @@ _gl_widget::_gl_widget(_window *Window1):Window(Window1)
   brazosTimer.start(16);
 
   connect(&brazosTimer, SIGNAL(timeout()), this, SLOT(updateCabina()));
-  brazosTimer.start(16);
+  cabinaTimer.start(16);
 
 }
 
@@ -56,6 +56,7 @@ void _gl_widget::keyPressEvent(QKeyEvent *Keyevent)
   case Qt::Key_6:Object=OBJECT_PLY;break;
   case Qt::Key_7:Object=OBJECT_MODEL;break;
 
+  case Qt::Key_A:Animation_activated=!Animation_activated;break;
   case Qt::Key_P:Draw_point=!Draw_point;break;
   case Qt::Key_L:Draw_line=!Draw_line;break;
   case Qt::Key_F:Draw_fill=!Draw_fill;break;
@@ -123,6 +124,29 @@ void _gl_widget::change_observer()
   glRotatef(Observer_angle_x,1,0,0);
   glRotatef(Observer_angle_y,0,1,0);
 }
+
+
+/*****************************************************************************//**
+ * Funciones para activar y desactivar la animación con QTimer
+ *
+ *
+ *
+ *****************************************************************************/
+
+void _gl_widget::activateAnimation() {
+
+}
+
+void _gl_widget::desactivateAnimation() {
+  baseTimer.stop();
+
+  brazosTimer.stop();
+
+  cabinaTimer.stop();
+}
+
+
+
 /*****************************************************************************//**
  * Funciones para actualizar la animación con QTimer
  *
@@ -131,13 +155,14 @@ void _gl_widget::change_observer()
  *****************************************************************************/
 
 void _gl_widget::updateBase() {
-  aplhaBase += 2;
-  if (aplhaBase >= 360) {
-      aplhaBase = 0;
+  if(Animation_activated) {
+      aplhaBase += 2 * velocidadBase;
+      if (aplhaBase >= 360) {
+          aplhaBase = 0;
+      }
+      Saltamontes->setAlphaBase(aplhaBase);
+      update();
   }
-
-  Saltamontes->setAlphaBase(aplhaBase);
-  update();
 }
 
 void _gl_widget::updateBrazos() {
@@ -150,22 +175,22 @@ void _gl_widget::updateBrazos() {
   }
 
   if (rotateDownBrazos) {
-      alphaBrazosPares++;
-      alphaBrazosImpares--;
+      alphaBrazosPares += 1 * velocidadBrazos;
+      alphaBrazosImpares -= 1 * velocidadBrazos;
 
-      if(alphaBrazosPares >= 90) {
-          alphaBrazosPares = 90;
+      if(alphaBrazosPares >= 80) {
+          alphaBrazosPares = 80;
           alphaBrazosImpares = 0;
 
           rotateDownBrazos = false;
       }
   } else {
-      alphaBrazosPares--;
-      alphaBrazosImpares++;
+      alphaBrazosPares -= 1 * velocidadBrazos;
+      alphaBrazosImpares += 1 * velocidadBrazos;
 
       if(alphaBrazosPares <= 0) {
           alphaBrazosPares = 0;
-          alphaBrazosImpares = 90;
+          alphaBrazosImpares = 80;
           rotateDownBrazos = true;
       }
   }
@@ -176,14 +201,14 @@ void _gl_widget::updateBrazos() {
 
 void _gl_widget::updateCabina() {
   if (rotateCabina) {
-      alphaCabina++;
+      alphaCabina += 1 * velocidadCabina;
 
       if(alphaCabina >= 80) {
           alphaCabina = 80;
           rotateCabina = false;
       }
   } else {
-      alphaCabina--;
+      alphaCabina -= 1 * velocidadCabina;
 
       if(alphaCabina <= 0) {
           alphaCabina = 0;
@@ -338,11 +363,12 @@ void _gl_widget::initializeGL()
   Draw_fill=false;
   Draw_chess=true;
   Draw_model=false;
+  Animation_activated = false;
 
   Cylinder = new _cylinder(0.5f,2,60);
   Cone = new _cone(0.5f,2,60);
   Sphere = new _sphere(1.f,60);
-  string path = "../P1_skeleton/ply_models/beethoven.ply";
+  string path = "../P1_skeleton/ply_models/rana.ply";
   Ply = new _ply(path);
   Saltamontes = new _saltamontes();
 

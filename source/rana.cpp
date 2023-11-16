@@ -1,4 +1,4 @@
-#include "../include/saltamontes.h"
+#include "../include/rana.h"
 
 void _saltamontes::setAlphaBase(const int& rotationAngle) {
     this->alphaBase = rotationAngle;
@@ -16,16 +16,16 @@ void _saltamontes::setAlphaCabina(const int& rotationAngle) {
 
 void _saltamontes::draw(const _draw& draw)
 {
-
-
     glColor3fv((GLfloat *) &_colors_ne::BLACK);
     base(draw);
-    glRotatef(alphaBase,0,1,0);
+
     glColor3fv((GLfloat *) &_colors_ne::MAGENTA);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glRotatef(alphaBase,0,1,0);
     antebrazo(draw);
-
-    //brazo(draw);
-
+    glPopMatrix();
 
 }
 
@@ -63,7 +63,7 @@ void _saltamontes::antebrazo(const _draw& draw) {
     case _mode::MODE_DRAW_CHESS:
         Cylinder->draw_chess();
         break;
-    case _mode::MODE_DRAW_FILL:glScalef(0.2,0.4,0.2);
+    case _mode::MODE_DRAW_FILL:
         Cylinder->draw_fill();
         break;
     case _mode::MODE_DRAW_LINE:
@@ -77,31 +77,34 @@ void _saltamontes::antebrazo(const _draw& draw) {
 
     glPushMatrix();
     glTranslatef(0,1.5,0);
-    glScalef(0.25,0.25,0.25);
+    glScalef(0.07,0.07,0.07);
+    glRotatef(180,0,0,1);
+
+    glColor3fv((GLfloat *) &_colors_ne::GREEN);
+
     switch (draw){
     case _mode::MODE_DRAW_CHESS:
-        Sphere->draw_chess();
+        Rana->draw_chess();
         break;
     case _mode::MODE_DRAW_FILL:
-        Sphere->draw_fill();
+        Rana->draw_fill();
         break;
     case _mode::MODE_DRAW_LINE:
-        Sphere->draw_line();
+        Rana->draw_line();
         break;
     case _mode::MODE_DRAW_POINT:
-        Sphere->draw_chess();
+        Rana->draw_chess();
         break;
     }
     glPopMatrix();
 
-    glColor3fv((GLfloat *) &_colors_ne::CYAN);
     brazos(draw);
 
 }
 
 void _saltamontes::brazos(const _draw& draw) {
 
-
+    glColor3fv((GLfloat *) &_colors_ne::CYAN);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslatef(0,1,0);
@@ -113,6 +116,7 @@ void _saltamontes::brazos(const _draw& draw) {
     brazo(draw);
     glPopMatrix();
 
+    glColor3fv((GLfloat *) &_colors_ne::CYAN);
     glPushMatrix();
     glTranslatef(0,1,0);
     glTranslatef(0,alturaBrazos,0);
@@ -123,6 +127,7 @@ void _saltamontes::brazos(const _draw& draw) {
     brazo(draw);
     glPopMatrix();
 
+    glColor3fv((GLfloat *) &_colors_ne::CYAN);
     glPushMatrix();
     glTranslatef(0,1,0);
     glTranslatef(0,alturaBrazos,0);
@@ -133,6 +138,7 @@ void _saltamontes::brazos(const _draw& draw) {
     brazo(draw);
     glPopMatrix();
 
+    glColor3fv((GLfloat *) &_colors_ne::CYAN);
     glPushMatrix();
     glTranslatef(0,1,0);
     glTranslatef(0,alturaBrazos,0);
@@ -143,6 +149,7 @@ void _saltamontes::brazos(const _draw& draw) {
     brazo(draw);
     glPopMatrix();
 
+    glColor3fv((GLfloat *) &_colors_ne::CYAN);
     glPushMatrix();
     glTranslatef(0,1,0);
     glTranslatef(0,alturaBrazos,0);
@@ -152,6 +159,7 @@ void _saltamontes::brazos(const _draw& draw) {
     brazo(draw);
     glPopMatrix();
 
+    glColor3fv((GLfloat *) &_colors_ne::CYAN);
     glPushMatrix();
     glTranslatef(0,1,0);
     glTranslatef(0,alturaBrazos,0);
@@ -162,6 +170,7 @@ void _saltamontes::brazos(const _draw& draw) {
     brazo(draw);
     glPopMatrix();
 
+    glColor3fv((GLfloat *) &_colors_ne::CYAN);
     glPushMatrix();
     glTranslatef(0,1,0);
     glTranslatef(0,alturaBrazos,0);
@@ -172,6 +181,7 @@ void _saltamontes::brazos(const _draw& draw) {
     brazo(draw);
     glPopMatrix();
 
+    glColor3fv((GLfloat *) &_colors_ne::CYAN);
     glPushMatrix();
     glTranslatef(0,1,0);
     glTranslatef(0,alturaBrazos,0);
@@ -218,8 +228,8 @@ void _saltamontes::brazo(const _draw& draw) {
 void _saltamontes::cabina(const _draw& draw) {
     glMatrixMode(GL_MODELVIEW);
 
+    glColor3fv((GLfloat *) &_colors_ne::BLACK);
     glPushMatrix();
-    //glRotatef(alphaBase,0,1,0);
     glScalef(0.2,0.4,0.2);
     switch (draw){
     case _mode::MODE_DRAW_CHESS:
@@ -237,6 +247,7 @@ void _saltamontes::cabina(const _draw& draw) {
     }
     glPopMatrix();
 
+    glColor3fv((GLfloat *) &_colors_ne::RED);
     glPushMatrix();
     glTranslatef(0,0.1,0.175);
     asiento(draw);
