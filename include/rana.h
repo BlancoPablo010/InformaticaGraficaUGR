@@ -19,7 +19,7 @@ class _saltamontes
 {
     _cone *Cone = new _cone;
     _cylinder *Cylinder = new _cylinder;
-    _ply *Rana = new _ply("../P1_skeleton/ply_models/rana.ply");
+    _ply *Rana = new _ply("../InformaticaGraficaUGR/ply_models/rana.ply");
     _cube *Cube = new _cube;
     int alphaBase;
     int alphaBrazosPares;

@@ -62,6 +62,25 @@ void _gl_widget::keyPressEvent(QKeyEvent *Keyevent)
   case Qt::Key_F:Draw_fill=!Draw_fill;break;
   case Qt::Key_C:Draw_chess=!Draw_chess;break;
 
+  //Teclas para controlar los movimientos de los grados de libertad
+  case Qt::Key_Q:break;
+  case Qt::Key_W:break;
+
+  case Qt::Key_S:break;
+  case Qt::Key_D:break;
+
+  case Qt::Key_Z:break;
+  case Qt::Key_X:break;
+
+  //Teclas para subir la velocidad de los movimientos con los grados de libertad
+  case Qt::Key_E:velocidadBase-=0.1;break;
+  case Qt::Key_R:velocidadBase+=0.1;break;
+
+  case Qt::Key_T:velocidadBrazos-=0.1;break;
+  case Qt::Key_Y:velocidadBrazos+=0.1;break;
+
+  case Qt::Key_U:velocidadCabina-=0.1;break;
+  case Qt::Key_I:velocidadCabina+=0.1;break;
 
   case Qt::Key_Left:Observer_angle_y-=ANGLE_STEP;break;
   case Qt::Key_Right:Observer_angle_y+=ANGLE_STEP;break;
@@ -125,28 +144,6 @@ void _gl_widget::change_observer()
   glRotatef(Observer_angle_y,0,1,0);
 }
 
-
-/*****************************************************************************//**
- * Funciones para activar y desactivar la animación con QTimer
- *
- *
- *
- *****************************************************************************/
-
-void _gl_widget::activateAnimation() {
-
-}
-
-void _gl_widget::desactivateAnimation() {
-  baseTimer.stop();
-
-  brazosTimer.stop();
-
-  cabinaTimer.stop();
-}
-
-
-
 /*****************************************************************************//**
  * Funciones para actualizar la animación con QTimer
  *
@@ -156,6 +153,7 @@ void _gl_widget::desactivateAnimation() {
 
 void _gl_widget::updateBase() {
   if(Animation_activated) {
+      if(velocidadBase <= 0) velocidadBase = 0;
       aplhaBase += 2 * velocidadBase;
       if (aplhaBase >= 360) {
           aplhaBase = 0;
@@ -168,42 +166,51 @@ void _gl_widget::updateBase() {
 void _gl_widget::updateBrazos() {
 
   if(Animation_activated) {
+      primeraAnimacion = false;
       alturaBrazos += 0.0015f;  // Ajusta según sea necesario
 
       // Cambia la dirección cuando alcanza cierta altura
       if (alturaBrazos >= 0.5f || alturaBrazos <= 0.0f) {
           alturaBrazos = (alturaBrazos >= 0.5f) ? 0.5f : 0.0f;
       }
+    if(velocidadBrazos<=0) velocidadBrazos = 0;
+    if (rotateDownBrazos) {
 
-      if (rotateDownBrazos) {
-          alphaBrazosPares += 1 * velocidadBrazos;
-          alphaBrazosImpares -= 1 * velocidadBrazos;
+        alphaBrazosPares += 1 * velocidadBrazos;
+        alphaBrazosImpares -= 1 * velocidadBrazos;
 
-          if(alphaBrazosPares >= 80) {
-              alphaBrazosPares = 80;
-              alphaBrazosImpares = 0;
+        if(alphaBrazosPares >= 80) {
+          alphaBrazosPares = 80;
+          alphaBrazosImpares = 0;
 
-              rotateDownBrazos = false;
-          }
-      } else {
-          alphaBrazosPares -= 1 * velocidadBrazos;
-          alphaBrazosImpares += 1 * velocidadBrazos;
+          rotateDownBrazos = false;
+        }
+    } else {
+        if(velocidadBrazos<=0) velocidadBrazos = 0;
+        alphaBrazosPares -= 1 * velocidadBrazos;
+        alphaBrazosImpares += 1 * velocidadBrazos;
 
-          if(alphaBrazosPares <= 0) {
-              alphaBrazosPares = 0;
-              alphaBrazosImpares = 80;
-              rotateDownBrazos = true;
-          }
-      }
+        if(alphaBrazosPares <= 0) {
+            alphaBrazosPares = 0;
+            alphaBrazosImpares = 80;
+            rotateDownBrazos = true;
+        }
+    }
 
+    Saltamontes->setAlphaBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
+    update();
+  }
+  else if (primeraAnimacion){
+      alphaBrazosPares = 0;
+      alphaBrazosImpares = 80;
       Saltamontes->setAlphaBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
       update();
   }
-
 }
 
 void _gl_widget::updateCabina() {
   if(Animation_activated) {
+      if(velocidadCabina <= 0) velocidadCabina = 0;
       if (rotateCabina) {
           alphaCabina += 1 * velocidadCabina;
 
@@ -223,8 +230,6 @@ void _gl_widget::updateCabina() {
       Saltamontes->setAlphaCabina(alphaCabina);
       update();
   }
-
-
 }
 
 /*****************************************************************************//**
@@ -369,7 +374,7 @@ void _gl_widget::initializeGL()
   Draw_fill=false;
   Draw_chess=true;
   Draw_model=false;
-  Animation_activated = false;
+  Animation_activated=false;
 
   Cylinder = new _cylinder(0.5f,2,60);
   Cone = new _cone(0.5f,2,60);

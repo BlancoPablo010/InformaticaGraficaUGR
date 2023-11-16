@@ -59,7 +59,7 @@ Q_OBJECT
 public:
   _gl_widget(_window *Window1);
 
-    void activateAnimation();
+  void activateAnimation();
   void desactivateAnimation();
 
   void clear_window();
@@ -88,13 +88,15 @@ private:
   QTimer cabinaTimer;
 
   //Ángulo y parámetros necesarios para rotación de las animaciones
-  int aplhaBase = 0;
-  int alphaBrazosPares = 0;
-  int alphaBrazosImpares = 80;
-  int alphaCabina = 0;
+  float aplhaBase = 0;
+  float alphaBrazosPares = 0;
+  float alphaBrazosImpares = 80;
+  float alphaCabina = 0;
   float alturaBrazos = 0.0f;
   bool rotateDownBrazos = true;
   bool rotateCabina = true;
+
+  bool primeraAnimacion = true;
 
   //Factores de velocidad de las animaciones
   float velocidadBase = 1;
