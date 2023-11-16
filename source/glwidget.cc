@@ -167,57 +167,63 @@ void _gl_widget::updateBase() {
 
 void _gl_widget::updateBrazos() {
 
-  alturaBrazos += 0.0015f;  // Ajusta según sea necesario
+  if(Animation_activated) {
+      alturaBrazos += 0.0015f;  // Ajusta según sea necesario
 
-  // Cambia la dirección cuando alcanza cierta altura
-  if (alturaBrazos >= 0.5f || alturaBrazos <= 0.0f) {
-      alturaBrazos = (alturaBrazos >= 0.5f) ? 0.5f : 0.0f;
+      // Cambia la dirección cuando alcanza cierta altura
+      if (alturaBrazos >= 0.5f || alturaBrazos <= 0.0f) {
+          alturaBrazos = (alturaBrazos >= 0.5f) ? 0.5f : 0.0f;
+      }
+
+      if (rotateDownBrazos) {
+          alphaBrazosPares += 1 * velocidadBrazos;
+          alphaBrazosImpares -= 1 * velocidadBrazos;
+
+          if(alphaBrazosPares >= 80) {
+              alphaBrazosPares = 80;
+              alphaBrazosImpares = 0;
+
+              rotateDownBrazos = false;
+          }
+      } else {
+          alphaBrazosPares -= 1 * velocidadBrazos;
+          alphaBrazosImpares += 1 * velocidadBrazos;
+
+          if(alphaBrazosPares <= 0) {
+              alphaBrazosPares = 0;
+              alphaBrazosImpares = 80;
+              rotateDownBrazos = true;
+          }
+      }
+
+      Saltamontes->setAlphaBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
+      update();
   }
 
-  if (rotateDownBrazos) {
-      alphaBrazosPares += 1 * velocidadBrazos;
-      alphaBrazosImpares -= 1 * velocidadBrazos;
-
-      if(alphaBrazosPares >= 80) {
-          alphaBrazosPares = 80;
-          alphaBrazosImpares = 0;
-
-          rotateDownBrazos = false;
-      }
-  } else {
-      alphaBrazosPares -= 1 * velocidadBrazos;
-      alphaBrazosImpares += 1 * velocidadBrazos;
-
-      if(alphaBrazosPares <= 0) {
-          alphaBrazosPares = 0;
-          alphaBrazosImpares = 80;
-          rotateDownBrazos = true;
-      }
-  }
-
-  Saltamontes->setAlphaBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
-  update();
 }
 
 void _gl_widget::updateCabina() {
-  if (rotateCabina) {
-      alphaCabina += 1 * velocidadCabina;
+  if(Animation_activated) {
+      if (rotateCabina) {
+          alphaCabina += 1 * velocidadCabina;
 
-      if(alphaCabina >= 80) {
-          alphaCabina = 80;
-          rotateCabina = false;
-      }
-  } else {
-      alphaCabina -= 1 * velocidadCabina;
+          if(alphaCabina >= 80) {
+              alphaCabina = 80;
+              rotateCabina = false;
+          }
+      } else {
+          alphaCabina -= 1 * velocidadCabina;
 
-      if(alphaCabina <= 0) {
-          alphaCabina = 0;
-          rotateCabina = true;
+          if(alphaCabina <= 0) {
+              alphaCabina = 0;
+              rotateCabina = true;
+          }
       }
+
+      Saltamontes->setAlphaCabina(alphaCabina);
+      update();
   }
 
-  Saltamontes->setAlphaCabina(alphaCabina);
-  update();
 
 }
 
