@@ -160,11 +160,10 @@ void _rana::brazos(const _draw& draw) {
     brazo(draw);
     glPopMatrix();
 
-
     glPushMatrix();
     glTranslatef(0,1,0);
     glRotatef(rotationBrazosImpares,0.5,0,-0.5);
-    glTranslatef(0,-alturaBrazos,0);
+    glRotatef(45,0.5,0,-0.5);
     glRotatef(225,0,1,0);
     brazo(draw);
     glPopMatrix();

@@ -202,13 +202,13 @@ void _gl_widget::updateBrazos() {
         }
         Rana->setRotationBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
         update();
-    } /*else if (primeraAnimacion){
+    } else if (primeraAnimacion){
         primeraAnimacion = false;
         alphaBrazosPares = 0;
         alphaBrazosImpares = 80;
         Rana->setRotationBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
         update();
-    }*/
+    }
     else {
         if(abs(betaBrazosPares) >= 80) {
             betaBrazosPares = 80;
@@ -405,7 +405,7 @@ void _gl_widget::initializeGL()
   Cylinder = new _cylinder(0.5f,2,60);
   Cone = new _cone(0.5f,2,60);
   Sphere = new _sphere(1.f,60);
-  string path = "../P1_skeleton/ply_models/rana.ply";
+  string path = "../InformaticaGraficaUGR/ply_models/rana.ply";
   Ply = new _ply(path);
   Rana = new _rana();
 
