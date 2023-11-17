@@ -15,20 +15,20 @@ namespace _mode {
 
 using namespace _mode;
 
-class _saltamontes
+class _rana
 {
     _cone *Cone = new _cone;
     _cylinder *Cylinder = new _cylinder;
     _ply *Rana = new _ply("../InformaticaGraficaUGR/ply_models/rana.ply");
     _cube *Cube = new _cube;
-    int alphaBase;
-    int alphaBrazosPares;
-    int alphaBrazosImpares;
+    int rotationBase;
+    int rotationBrazosPares;
+    int rotationBrazosImpares;
     int alturaBrazos;
-    int alphaCabina;
+    int rotationCabina;
 
 public:
-    _saltamontes() {}
+    _rana() {}
     void draw(const _draw&);
 
     void base(const _draw&);
@@ -37,9 +37,9 @@ public:
     void cabina(const _draw&);
     void asiento(const _draw&);
     void brazos(const _draw&);
-    void setAlphaBase(const int&);
-    void setAlphaBrazos(const int&, const int&, const float&);
-    void setAlphaCabina(const int&);
+    void setRotationBase(const int&);
+    void setRotationBrazos(const int&, const int&, const float&);
+    void setRotationCabina(const int&);
 
 };
 

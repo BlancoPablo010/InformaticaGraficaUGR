@@ -87,16 +87,21 @@ private:
   QTimer brazosTimer;
   QTimer cabinaTimer;
 
-  //Ángulo y parámetros necesarios para rotación de las animaciones
-  float aplhaBase = 0;
+  //Ángulos y parámetros necesarios para rotación de las animaciones
+  float alphaBase = 0;
   float alphaBrazosPares = 0;
   float alphaBrazosImpares = 80;
   float alphaCabina = 0;
   float alturaBrazos = 0.0f;
   bool rotateDownBrazos = true;
   bool rotateCabina = true;
-
   bool primeraAnimacion = true;
+
+  //Ángulos y parámetros necesarios para la rotación sin animación
+  float betaBase = 0;
+  float betaBrazosPares = 0;
+  float betaBrazosImpares = 80;
+  float betaCabina = 0;
 
   //Factores de velocidad de las animaciones
   float velocidadBase = 1;
@@ -111,7 +116,7 @@ private:
   _cone *Cone=nullptr;
   _sphere *Sphere=nullptr;
   _ply *Ply=nullptr;
-  _saltamontes *Saltamontes=nullptr;
+  _rana *Rana=nullptr;
 
   _gl_widget_ne::_object Object;
 

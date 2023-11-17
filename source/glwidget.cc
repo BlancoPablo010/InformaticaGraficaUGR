@@ -63,14 +63,14 @@ void _gl_widget::keyPressEvent(QKeyEvent *Keyevent)
   case Qt::Key_C:Draw_chess=!Draw_chess;break;
 
   //Teclas para controlar los movimientos de los grados de libertad
-  case Qt::Key_Q:break;
-  case Qt::Key_W:break;
+  case Qt::Key_Q:betaBase-=10;break;
+  case Qt::Key_W:betaBase+=10;break;
 
-  case Qt::Key_S:break;
-  case Qt::Key_D:break;
+  case Qt::Key_S:betaBrazosPares-=5;betaBrazosImpares+=5;break;
+  case Qt::Key_D:betaBrazosPares+=5;betaBrazosImpares-=5;break;
 
-  case Qt::Key_Z:break;
-  case Qt::Key_X:break;
+  case Qt::Key_Z:betaCabina-=5;break;
+  case Qt::Key_X:betaCabina+=5;break;
 
   //Teclas para subir la velocidad de los movimientos con los grados de libertad
   case Qt::Key_E:velocidadBase-=0.1;break;
@@ -153,83 +153,109 @@ void _gl_widget::change_observer()
 
 void _gl_widget::updateBase() {
   if(Animation_activated) {
-      if(velocidadBase <= 0) velocidadBase = 0;
-      aplhaBase += 2 * velocidadBase;
-      if (aplhaBase >= 360) {
-          aplhaBase = 0;
-      }
-      Saltamontes->setAlphaBase(aplhaBase);
-      update();
-  }
+        if(velocidadBase <= 0) velocidadBase = 0;
+        alphaBase += 2 * velocidadBase;
+        if (alphaBase >= 360) {
+            alphaBase = 0;
+        }
+        Rana->setRotationBase(alphaBase);
+        update();
+    } else {
+        if(abs(betaBase) >= 360) {
+            alphaBase = 0;
+        }
+        else if (alphaBase <= 0){
+            alphaBase = 360;
+        }
+        Rana->setRotationBase(betaBase);
+        update();
+    }
 }
 
 void _gl_widget::updateBrazos() {
 
-  if(Animation_activated) {
-      primeraAnimacion = false;
-      alturaBrazos += 0.0015f;  // Ajusta según sea necesario
+    if(Animation_activated) {
+        primeraAnimacion = false;
 
-      // Cambia la dirección cuando alcanza cierta altura
-      if (alturaBrazos >= 0.5f || alturaBrazos <= 0.0f) {
-          alturaBrazos = (alturaBrazos >= 0.5f) ? 0.5f : 0.0f;
-      }
-    if(velocidadBrazos<=0) velocidadBrazos = 0;
-    if (rotateDownBrazos) {
-
-        alphaBrazosPares += 1 * velocidadBrazos;
-        alphaBrazosImpares -= 1 * velocidadBrazos;
-
-        if(alphaBrazosPares >= 80) {
-          alphaBrazosPares = 80;
-          alphaBrazosImpares = 0;
-
-          rotateDownBrazos = false;
-        }
-    } else {
         if(velocidadBrazos<=0) velocidadBrazos = 0;
-        alphaBrazosPares -= 1 * velocidadBrazos;
-        alphaBrazosImpares += 1 * velocidadBrazos;
+        if (rotateDownBrazos) {
 
-        if(alphaBrazosPares <= 0) {
-            alphaBrazosPares = 0;
-            alphaBrazosImpares = 80;
-            rotateDownBrazos = true;
+            alphaBrazosPares += 1 * velocidadBrazos;
+            alphaBrazosImpares -= 1 * velocidadBrazos;
+
+            if(alphaBrazosPares >= 80) {
+                alphaBrazosPares = 80;
+                alphaBrazosImpares = 0;
+
+                rotateDownBrazos = false;
+            }
+        } else {
+            if(velocidadBrazos<=0) velocidadBrazos = 0;
+            alphaBrazosPares -= 1 * velocidadBrazos;
+            alphaBrazosImpares += 1 * velocidadBrazos;
+
+            if(alphaBrazosPares <= 0) {
+                alphaBrazosPares = 0;
+                alphaBrazosImpares = 80;
+                rotateDownBrazos = true;
+            }
         }
-    }
+        Rana->setRotationBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
+        update();
+    } /*else if (primeraAnimacion){
+        primeraAnimacion = false;
+        alphaBrazosPares = 0;
+        alphaBrazosImpares = 80;
+        Rana->setRotationBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
+        update();
+    }*/
+    else {
+        if(abs(betaBrazosPares) >= 80) {
+            betaBrazosPares = 80;
+            betaBrazosImpares = 0;
 
-    Saltamontes->setAlphaBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
-    update();
-  }
-  else if (primeraAnimacion){
-      alphaBrazosPares = 0;
-      alphaBrazosImpares = 80;
-      Saltamontes->setAlphaBrazos(alphaBrazosPares, alphaBrazosImpares, alturaBrazos);
-      update();
-  }
+        } else if(betaBrazosImpares >= 80) {
+            betaBrazosPares = 0;
+            betaBrazosImpares = 80;
+        }
+        Rana->setRotationBrazos(betaBrazosPares, betaBrazosImpares, alturaBrazos);
+        update();
+    }
 }
 
+
 void _gl_widget::updateCabina() {
-  if(Animation_activated) {
-      if(velocidadCabina <= 0) velocidadCabina = 0;
-      if (rotateCabina) {
-          alphaCabina += 1 * velocidadCabina;
+    if(Animation_activated) {
+        if(velocidadCabina <= 0) velocidadCabina = 0;
+        if (rotateCabina) {
+            alphaCabina += 1 * velocidadCabina;
 
-          if(alphaCabina >= 80) {
-              alphaCabina = 80;
-              rotateCabina = false;
-          }
-      } else {
-          alphaCabina -= 1 * velocidadCabina;
+            if(alphaCabina >= 80) {
+                alphaCabina = 80;
+                rotateCabina = false;
+            }
+        } else {
+            alphaCabina -= 1 * velocidadCabina;
 
-          if(alphaCabina <= 0) {
-              alphaCabina = 0;
-              rotateCabina = true;
-          }
-      }
+            if(alphaCabina <= 0) {
+                alphaCabina = 0;
+                rotateCabina = true;
+            }
+        }
 
-      Saltamontes->setAlphaCabina(alphaCabina);
-      update();
-  }
+        Rana->setRotationCabina(alphaCabina);
+        update();
+    } else {
+        if(betaCabina >= 80) {
+            betaCabina = 80;
+        } else if (betaCabina <= 0) {
+                betaCabina = 0;
+        }
+
+
+        Rana->setRotationCabina(betaCabina);
+        update();
+    }
 }
 
 /*****************************************************************************//**
@@ -253,7 +279,7 @@ void _gl_widget::draw_objects()
     case OBJECT_CYLINDER:Cylinder->draw_point();break;
     case OBJECT_SPHERE:Sphere->draw_point();break;
     case OBJECT_PLY:Ply->draw_point();break;
-    case OBJECT_MODEL:Saltamontes->draw(_mode::MODE_DRAW_POINT);break;
+    case OBJECT_MODEL:Rana->draw(_mode::MODE_DRAW_POINT);break;
     default:break;
     }
   }
@@ -268,7 +294,7 @@ void _gl_widget::draw_objects()
     case OBJECT_CYLINDER:Cylinder->draw_line();break;
     case OBJECT_SPHERE:Sphere->draw_line();break;
     case OBJECT_PLY:Ply->draw_line();break;
-    case OBJECT_MODEL:Saltamontes->draw(_mode::MODE_DRAW_LINE);break;
+    case OBJECT_MODEL:Rana->draw(_mode::MODE_DRAW_LINE);break;
     default:break;
     }
   }
@@ -282,7 +308,7 @@ void _gl_widget::draw_objects()
     case OBJECT_CYLINDER:Cylinder->draw_fill();break;
     case OBJECT_SPHERE:Sphere->draw_fill();break;
     case OBJECT_PLY:Ply->draw_fill();break;
-    case OBJECT_MODEL:Saltamontes->draw(_mode::MODE_DRAW_FILL);break;
+    case OBJECT_MODEL:Rana->draw(_mode::MODE_DRAW_FILL);break;
     default:break;
     }
   }
@@ -295,7 +321,7 @@ void _gl_widget::draw_objects()
     case OBJECT_CYLINDER:Cylinder->draw_chess();break;
     case OBJECT_SPHERE:Sphere->draw_chess();break;
     case OBJECT_PLY:Ply->draw_chess();break;
-    case OBJECT_MODEL:Saltamontes->draw(_mode::MODE_DRAW_CHESS);break;
+    case OBJECT_MODEL:Rana->draw(_mode::MODE_DRAW_CHESS);break;
     default:break;
     }
   }
@@ -381,6 +407,6 @@ void _gl_widget::initializeGL()
   Sphere = new _sphere(1.f,60);
   string path = "../P1_skeleton/ply_models/rana.ply";
   Ply = new _ply(path);
-  Saltamontes = new _saltamontes();
+  Rana = new _rana();
 
 }
