@@ -1,5 +1,5 @@
 # InformaticaGraficaUGR
-### Prácticas de la asignatura Informática Gráfica de la carrera Ingeniería Informática de la UGR
+### Prácticas de la asignatura Informática Gráfica en el grado de Ingeniería Informática de la UGR
 <br>**El teclado tiene las siguientes funciones:**<br>
 
 1 -> Activa el tetrahedro<br>
