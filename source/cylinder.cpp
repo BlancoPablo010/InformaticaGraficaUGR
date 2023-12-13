@@ -10,4 +10,5 @@ _cylinder::_cylinder(float Radius, float Heigth, int NumDivisions)
                                  {Radius, -Heigth/2, Radius}
     };
     _initialize(axis::Y, points, Radius, Heigth, NumDivisions, 2, 3);
+
 }

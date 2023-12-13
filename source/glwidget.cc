@@ -35,6 +35,8 @@ _gl_widget::_gl_widget(_window *Window1):Window(Window1)
   connect(&brazosTimer, SIGNAL(timeout()), this, SLOT(updateCabina()));
   cabinaTimer.start(16);
 
+  connect(&lightTimer, SIGNAL(timeout()), this, SLOT(updateLight()));
+  lightTimer.start(16);
 }
 
 
@@ -61,6 +63,18 @@ void _gl_widget::keyPressEvent(QKeyEvent *Keyevent)
   case Qt::Key_L:Draw_line=!Draw_line;break;
   case Qt::Key_F:Draw_fill=!Draw_fill;break;
   case Qt::Key_C:Draw_chess=!Draw_chess;break;
+
+  //Teclas para controlar los modos de desplegue
+
+  case Qt::Key_F3:Draw_flat=!Draw_flat;break;
+  case Qt::Key_F4:Draw_smooth=!Draw_smooth;break;
+
+  //Teclas para controlar las luces y los materiales
+
+  case Qt::Key_J:light0=!light0;break;
+  case Qt::Key_K:light1=!light1;break;
+
+  case Qt::Key_M:material = (material+1)%3;break;
 
   //Teclas para controlar los movimientos de los grados de libertad
   case Qt::Key_Q:betaBase-=10;break;
@@ -258,6 +272,15 @@ void _gl_widget::updateCabina() {
     }
 }
 
+void _gl_widget::updateLight() {
+    if(Animation_activated) {
+        if (light1) {
+                angle_light1 = (angle_light1 < 360.0f ) ? angle_light1 += 5.0f : angle_light1 = 0.0f;
+                update();
+        }
+    }
+}
+
 /*****************************************************************************//**
  * Funcion que dibuja los objetos
  *
@@ -325,9 +348,183 @@ void _gl_widget::draw_objects()
     default:break;
     }
   }
+
+  if (Draw_flat) {
+    _vertex4f Ambient(0.1,0.1,0.1,1);
+
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT,(GLfloat *)&Ambient);
+
+    init_lights();
+    init_materials();
+
+    glEnable(GL_LIGHTING);
+    switch (Object){
+    case OBJECT_TETRAHEDRON:Tetrahedron.draw_flat_shadding();break;
+    case OBJECT_CUBE:Cube.draw_flat_shadding();break;
+    case OBJECT_CONE:Cone->draw_flat_shadding();break;
+    case OBJECT_CYLINDER:Cylinder->draw_flat_shadding();break;
+    case OBJECT_SPHERE:Sphere->draw_flat_shadding();break;
+    case OBJECT_PLY:Ply->draw_flat_shadding();break;
+    case OBJECT_MODEL:Rana->draw(_mode::MODE_DRAW_CHESS);break;
+    default:break;
+    }
+    glDisable(GL_LIGHTING);
+  }
+
+  if(Draw_smooth) {
+    _vertex4f Ambient(0.1,0.1,0.1,1);
+
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT,(GLfloat *)&Ambient);
+
+    init_lights();
+    init_materials();
+
+    glEnable(GL_LIGHTING);
+    switch (Object){
+    case OBJECT_TETRAHEDRON:Tetrahedron.draw_smooth_shadding();break;
+    case OBJECT_CUBE:Cube.draw_smooth_shadding();break;
+    case OBJECT_CONE:Cone->draw_smooth_shadding();break;
+    case OBJECT_CYLINDER:Cylinder->draw_smooth_shadding();break;
+    case OBJECT_SPHERE:Sphere->draw_smooth_shadding();break;
+    case OBJECT_PLY:Ply->draw_smooth_shadding();break;
+    case OBJECT_MODEL:Rana->draw(_mode::MODE_DRAW_CHESS);break;
+    default:break;
+    }
+    glDisable(GL_LIGHTING);
+  }
 }
 
+/*****************************************************************************//**
+ * Inits de luces y materiales
+ *
+ *
+ *
+ *****************************************************************************/
+/*
+void _gl_widget::init_lights() {
+  if (light0){
+    _vertex4f position(1,1,1,0); //Posición de la luz, último parámetro hace que sea una luz direccional
+    _vertex4f diffuse(1,1,1,1);  //Color de la luz, en este caso blancoç
 
+
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glLightfv(GL_LIGHT0,GL_POSITION,(GLfloat *)&position);
+    glLightfv(GL_LIGHT0,GL_DIFFUSE,(GLfloat *)&diffuse);
+    glPopMatrix();
+
+    glEnable(GL_LIGHT0);
+
+  }
+  else{
+    glDisable(GL_LIGHT0);
+  }
+
+  if (light1){
+
+    _vertex4f diffuse(1.0f, 0.0f, 1.0f, 1.0f);
+    _vertex4f position(12.0, 10.0, 20.0, 1.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glLightfv(GL_LIGHT1, GL_POSITION, (GLfloat *)&position);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE,  (GLfloat *)&diffuse);
+    glRotatef(angle_light1,0,1,0);
+    glPopMatrix();
+
+    glEnable(GL_LIGHT1);
+
+
+  }
+  else{
+    glDisable(GL_LIGHT1);
+  }
+}
+
+*/
+
+void _gl_widget::init_lights() {
+  if (light0){
+    _vertex4f Position(0,0,1,0);
+
+    glEnable(GL_LIGHT0);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glLightfv(GL_LIGHT0,GL_POSITION,(GLfloat *)&Position);
+    glPopMatrix();
+  }
+  else{
+    glDisable(GL_LIGHT0);
+  }
+
+  if (light1){
+
+    GLfloat light_ambient[] = { 1.0f, 1.0f, 1.0f, 1.0f};
+    GLfloat light_magenta[] = {1.0f, 0.0f, 1.0f, 1.0f};
+
+    _vertex4f light1_position(12.0, 10.0, 20.0, 1.0);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light_magenta);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, light_magenta);
+    glEnable(GL_LIGHT1);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glRotatef(angle_light1,0,1,0);
+    glLightfv(GL_LIGHT1,GL_POSITION, (GLfloat *)&light1_position);
+    glPopMatrix();
+
+
+
+  }
+  else{
+    glDisable(GL_LIGHT1);
+  }
+}
+
+void _gl_widget::init_materials() {
+    switch (material){
+      case 0:{
+        _vertex3f Material_diffuse(0.3,0.3,0.3);
+        _vertex3f Material_specular(0.1,0.1,0.1);
+        _vertex3f Material_ambient(0.05,0.05,0.05);
+        float Material_shininess=1;
+
+        glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(GLfloat *)&Material_diffuse);
+        glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(GLfloat *)&Material_specular);
+        glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(GLfloat *)&Material_ambient);
+        glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material_shininess);
+    }
+    break;
+    case 1: {// emerald
+        float Material_shininess=0.6;
+        _vertex3f Material_diffuse(0.07568,0.61424, 	0.07568);
+        _vertex3f Material_specular( 	0.633,0.727811, 	0.633);
+        _vertex3f Material_ambient(0.0215, 0.1745, 0.0215);
+
+        glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(GLfloat *)&Material_diffuse);
+        glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(GLfloat *)&Material_specular);
+        glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(GLfloat *)&Material_ambient);
+        glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material_shininess);
+    }
+    break;
+    case 2: { // yellow plastic
+        float Material_shininess=.25;
+        _vertex3f Material_diffuse(0.5,0.5,0.0);
+        _vertex3f Material_specular(0.6,0.6, 0.5);
+        _vertex3f Material_ambient(0.0, 0.0, 0.0);
+
+        glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(GLfloat *)&Material_diffuse);
+        glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(GLfloat *)&Material_specular);
+        glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(GLfloat *)&Material_ambient);
+        glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,Material_shininess);
+    }
+    break;
+    }
+}
 
 /*****************************************************************************//**
  * Evento de dibujado
@@ -400,7 +597,17 @@ void _gl_widget::initializeGL()
   Draw_fill=false;
   Draw_chess=true;
   Draw_model=false;
+  Draw_flat=false;
+  Draw_smooth=false;
   Animation_activated=false;
+
+  light0 = true;
+
+  light1 = false;
+
+  angle_light1=0.0f;
+
+  material = 0;
 
   Cylinder = new _cylinder(0.5f,2,60);
   Cone = new _cone(0.5f,2,60);

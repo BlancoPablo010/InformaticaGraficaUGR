@@ -16,4 +16,5 @@ _sphere::_sphere(float Radius, int NumDivisions)
     int matrixRows = NumDivisions/2;
     _initialize(axis::Y, points, Radius, 2*Radius, NumDivisions, step, matrixRows);
 
+
 }

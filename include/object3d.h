@@ -24,12 +24,23 @@ typedef enum {X, Y, Z} _coordenate;
 
 class _object3D:public _basic_object3D
 {
+
+  void normalize_vector_vertex3f(vector<_vertex3f>&);
+
   public:
   vector<_vertex3ui> Triangles;
+  vector<_vertex3f> Normal_Triangles;
+  vector<_vertex3f> Normal_Vertices;
+
+  void get_normal_triangles();
+  void get_normal_vertices();
 
   void draw_line();
   void draw_fill();
   void draw_chess();
+
+  void draw_flat_shadding();
+  void draw_smooth_shadding();
 
 };
 

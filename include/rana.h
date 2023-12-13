@@ -17,10 +17,12 @@ using namespace _mode;
 
 class _rana
 {
-    _cone *Cone = new _cone;
-    _cylinder *Cylinder = new _cylinder;
-    _ply *Rana = new _ply("../InformaticaGraficaUGR/ply_models/rana.ply");
-    _cube *Cube = new _cube;
+    _cone *ConeBase;
+    _cylinder *CylinderAntebrazo;
+    _ply *Rana;
+    vector<_cylinder*> CylinderBrazo;
+    vector<_cube*> CubeCabina;
+    vector<_cone*> ConeAsiento;
     int rotationBase;
     int rotationBrazosPares;
     int rotationBrazosImpares;
@@ -28,14 +30,14 @@ class _rana
     int rotationCabina;
 
 public:
-    _rana() {}
+    _rana();
     void draw(const _draw&);
 
     void base(const _draw&);
     void antebrazo(const _draw&);
-    void brazo(const _draw&);
-    void cabina(const _draw&);
-    void asiento(const _draw&);
+    void brazo(const _draw&, const unsigned int& index);
+    void cabina(const _draw&, const unsigned int& index);
+    void asiento(const _draw&, const unsigned int& index);
     void brazos(const _draw&);
     void setRotationBase(const int&);
     void setRotationBrazos(const int&, const int&, const float&);

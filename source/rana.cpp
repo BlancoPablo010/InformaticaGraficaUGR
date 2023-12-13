@@ -1,4 +1,29 @@
 #include "../include/rana.h"
+_rana::_rana() {
+
+    ConeBase = new _cone;
+    CylinderAntebrazo = new _cylinder;
+    Rana = new _ply("../InformaticaGraficaUGR/ply_models/rana.ply");
+
+    //ConeAsiento init
+    for (unsigned int i=0; i<8; i++) {
+        _cylinder* new_cylinder = new _cylinder;
+        CylinderBrazo.push_back(new_cylinder);
+    }
+
+    //CubeCabina init
+    for (unsigned int i=0; i<8; i++) {
+        _cube* new_cube = new _cube;
+        CubeCabina.push_back(new_cube);
+    }
+
+    //ConeAsiento init
+    for (unsigned int i=0; i<16; i++) {
+        _cone* new_cone = new _cone;
+        ConeAsiento.push_back(new_cone);
+    }
+
+}
 
 void _rana::setRotationBase(const int& rotationAngle) {
     this->rotationBase = rotationAngle;
@@ -37,16 +62,16 @@ void _rana::base(const _draw& draw) {
     glScalef(2,0.10,2);
     switch (draw){
     case _mode::MODE_DRAW_CHESS:
-        Cone->draw_chess();
+        ConeBase->draw_chess();
         break;
     case _mode::MODE_DRAW_FILL:
-        Cone->draw_fill();
+        ConeBase->draw_fill();
         break;
     case _mode::MODE_DRAW_LINE:
-        Cone->draw_line();
+        ConeBase->draw_line();
         break;
     case _mode::MODE_DRAW_POINT:
-        Cone->draw_chess();
+        ConeBase->draw_chess();
         break;
     }
     glPopMatrix();
@@ -54,23 +79,22 @@ void _rana::base(const _draw& draw) {
 
 void _rana::antebrazo(const _draw& draw) {
 
-
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslatef(0,0.75,0);
     glScalef(0.25,1.5,0.25);
     switch (draw){
     case _mode::MODE_DRAW_CHESS:
-        Cylinder->draw_chess();
+        CylinderAntebrazo->draw_chess();
         break;
     case _mode::MODE_DRAW_FILL:
-        Cylinder->draw_fill();
+        CylinderAntebrazo->draw_fill();
         break;
     case _mode::MODE_DRAW_LINE:
-        Cylinder->draw_line();
+        CylinderAntebrazo->draw_line();
         break;
     case _mode::MODE_DRAW_POINT:
-        Cylinder->draw_chess();
+        CylinderAntebrazo->draw_chess();
         break;
     }
     glPopMatrix();
@@ -110,7 +134,7 @@ void _rana::brazos(const _draw& draw) {
     glRotatef(rotationBrazosPares,1,0,0);
     glRotatef(45,1,0,0);
     glRotatef(180,0,1,0);
-    brazo(draw);
+    brazo(draw, 0);
     glPopMatrix();
 
     glPushMatrix();
@@ -118,7 +142,7 @@ void _rana::brazos(const _draw& draw) {
     glRotatef((rotationBrazosImpares),0.5,0,0.5);
     glRotatef(45,0.5,0,0.5);
     glRotatef(135,0,1,0);
-    brazo(draw);
+    brazo(draw, 1);
     glPopMatrix();
 
     glPushMatrix();
@@ -126,7 +150,7 @@ void _rana::brazos(const _draw& draw) {
     glRotatef(rotationBrazosPares,0,0,1);
     glRotatef(45,0,0,1);
     glRotatef(90,0,1,0);
-    brazo(draw);
+    brazo(draw, 2);
     glPopMatrix();
 
     glPushMatrix();
@@ -134,14 +158,14 @@ void _rana::brazos(const _draw& draw) {
     glRotatef(rotationBrazosImpares,-0.5,0,0.5);
     glRotatef(45,-0.5,0,0.5);
     glRotatef(45,0,1,0);
-    brazo(draw);
+    brazo(draw, 3);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(0,1,0);
     glRotatef(rotationBrazosPares,-1,0,0);
     glRotatef(45,-1,0,0);
-    brazo(draw);
+    brazo(draw, 4);
     glPopMatrix();
 
     glPushMatrix();
@@ -149,7 +173,7 @@ void _rana::brazos(const _draw& draw) {
     glRotatef(rotationBrazosImpares,-0.5,0,-0.5);
     glRotatef(45,-0.5,0,-0.5);
     glRotatef(315,0,1,0);
-    brazo(draw);
+    brazo(draw, 5);
     glPopMatrix();
 
     glPushMatrix();
@@ -157,7 +181,7 @@ void _rana::brazos(const _draw& draw) {
     glRotatef(rotationBrazosPares,0,0,-1);
     glRotatef(45,0,0,-1);
     glRotatef(270,0,1,0);
-    brazo(draw);
+    brazo(draw, 6);
     glPopMatrix();
 
     glPushMatrix();
@@ -165,12 +189,12 @@ void _rana::brazos(const _draw& draw) {
     glRotatef(rotationBrazosImpares,0.5,0,-0.5);
     glRotatef(45,0.5,0,-0.5);
     glRotatef(225,0,1,0);
-    brazo(draw);
+    brazo(draw, 7);
     glPopMatrix();
 
 }
 
-void _rana::brazo(const _draw& draw) {
+void _rana::brazo(const _draw& draw, const unsigned int & index) {
     glColor3fv((GLfloat *) &_colors_ne::CYAN);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -179,16 +203,16 @@ void _rana::brazo(const _draw& draw) {
     glScalef(0.08,1,0.08);
     switch (draw){
     case _mode::MODE_DRAW_CHESS:
-        Cylinder->draw_chess();
+        CylinderBrazo[index]->draw_chess();
         break;
     case _mode::MODE_DRAW_FILL:
-        Cylinder->draw_fill();
+        CylinderBrazo[index]->draw_fill();
         break;
     case _mode::MODE_DRAW_LINE:
-        Cylinder->draw_line();
+        CylinderBrazo[index]->draw_line();
         break;
     case _mode::MODE_DRAW_POINT:
-        Cylinder->draw_chess();
+        CylinderBrazo[index]->draw_chess();
         break;
     }
     glPopMatrix();
@@ -197,11 +221,11 @@ void _rana::brazo(const _draw& draw) {
     glTranslatef(0,1.2,0);
     glRotatef(rotationCabina,0,1,0);
     glRotatef(-40,0,1,0);
-    cabina(draw);
+    cabina(draw, index);
     glPopMatrix();
 }
 
-void _rana::cabina(const _draw& draw) {
+void _rana::cabina(const _draw& draw, const unsigned int & index) {
     glMatrixMode(GL_MODELVIEW);
 
     glColor3fv((GLfloat *) &_colors_ne::BLACK);
@@ -209,16 +233,16 @@ void _rana::cabina(const _draw& draw) {
     glScalef(0.2,0.4,0.2);
     switch (draw){
     case _mode::MODE_DRAW_CHESS:
-        Cube->draw_chess();
+        CubeCabina[index]->draw_chess();
         break;
     case _mode::MODE_DRAW_FILL:
-        Cube->draw_fill();
+        CubeCabina[index]->draw_fill();
         break;
     case _mode::MODE_DRAW_LINE:
-        Cube->draw_line();
+        CubeCabina[index]->draw_line();
         break;
     case _mode::MODE_DRAW_POINT:
-        Cube->draw_chess();
+        CubeCabina[index]->draw_chess();
         break;
     }
     glPopMatrix();
@@ -226,32 +250,32 @@ void _rana::cabina(const _draw& draw) {
     glColor3fv((GLfloat *) &_colors_ne::RED);
     glPushMatrix();
     glTranslatef(0,0.1,0.175);
-    asiento(draw);
+    asiento(draw, index*2);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(0,-0.1,0.175);
-    asiento(draw);
+    asiento(draw, index*2 +1);
     glPopMatrix();
 }
 
-void _rana::asiento(const _draw& draw) {
+void _rana::asiento(const _draw& draw, const unsigned int& index) {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glRotatef(90,1,0,0);
     glScalef(0.15,0.15,0.15);
     switch (draw){
     case _mode::MODE_DRAW_CHESS:
-        Cone->draw_chess();
+        ConeAsiento[index]->draw_chess();
         break;
     case _mode::MODE_DRAW_FILL:
-        Cone->draw_fill();
+        ConeAsiento[index]->draw_fill();
         break;
     case _mode::MODE_DRAW_LINE:
-        Cone->draw_line();
+        ConeAsiento[index]->draw_line();
         break;
     case _mode::MODE_DRAW_POINT:
-        Cone->draw_chess();
+        ConeAsiento[index]->draw_chess();
         break;
     }
     glPopMatrix();

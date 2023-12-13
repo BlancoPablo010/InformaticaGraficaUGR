@@ -10,4 +10,9 @@ _cone::_cone(float Radius, float Heigth, int NumDivisions)
                                  {Radius, -Heigth/2, Radius}
     };
     _initialize(axis::Y, points, Radius, Heigth, NumDivisions, 1, 2);
+
+
+
+
+
 }

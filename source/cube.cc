@@ -28,4 +28,6 @@ _cube::_cube(float Size)
     Triangles[10] = _vertex3ui(3,5,7);
     Triangles[11] = _vertex3ui(7,1,3);
 
+
+
 }

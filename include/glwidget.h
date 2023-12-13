@@ -73,6 +73,7 @@ public slots:
   void updateBase();
   void updateBrazos();
   void updateCabina();
+  void updateLight();
 
 protected:
   void resizeGL(int Width1, int Height1) Q_DECL_OVERRIDE;
@@ -86,6 +87,7 @@ private:
   QTimer baseTimer;
   QTimer brazosTimer;
   QTimer cabinaTimer;
+  QTimer lightTimer;
 
   //Ángulos y parámetros necesarios para rotación de las animaciones
   float alphaBase = 0;
@@ -126,11 +128,24 @@ private:
   bool Draw_chess;
   bool Draw_model;
 
+  bool Draw_flat;
+  bool Draw_smooth;
+
   bool Animation_activated;
 
   float Observer_angle_x;
   float Observer_angle_y;
   float Observer_distance;
+
+  bool light0;
+  bool light1;
+
+  float angle_light1;
+
+  int material;
+
+  void init_lights();
+  void init_materials();
 };
 
 #endif

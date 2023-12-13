@@ -31,6 +31,8 @@ _tetrahedron::_tetrahedron(float Size)
   Triangles[1]=_vertex3ui(1,2,3);
   Triangles[2]=_vertex3ui(2,0,3);
   Triangles[3]=_vertex3ui(0,2,1);
+
+
 }
 
 _disk::_disk(float Radius, int Num_divisions) {
@@ -47,6 +49,7 @@ _disk::_disk(float Radius, int Num_divisions) {
   for(int i=0;i<Num_divisions;i++) {
       Triangles[i]=_vertex3ui(i,(i+1)%Num_divisions,Num_divisions);
   }
+
 }
 
 
